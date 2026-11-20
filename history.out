@@ -1,0 +1,579 @@
+    1  chage -M 90 user1
+    2  chage -l user1
+    3  find / -type f -perm -4000 2>/dev/null
+    4  ps -eo pid,ruid,euid,comm | awk 'NR==1 || ($3==0 && $2>=1000 && $2!=65534)'
+    5  print 'Root-only test: OK\n' > /root/setuid-demo.txt
+    6  printf 'Root-only test: OK\n' > /root/setuid-demo.txt
+    7  chmod 600 /root/stuid-demo.txt
+    8  chmod 600 /root/setuid-demo.txt
+    9  cp /usr/bin/cat /home/user1/cat-suid
+   10  chow root:root /home/user1/cat-suid
+   11  chown root:root /home/user1/cat-suid
+   12  chmod 755 /home/user1/cat-suid
+   13  su - user1 -c '/home/user1/cat-suid /root/setuid-demo.txt'
+   14  chmod 4755 /home/user1/cat-suid
+   15  ls -l /home/user1/cat-suid
+   16  su - user1 -c '/home/user1/cat-suid /root/setuid-demo.txt'
+   17  chmod 755 /home/user1/cat-suid
+   18  cp /usr/bin/chown /home/user1/chown-cap
+   19  chown root:root /home/user1/chown-cap
+   20  chmod 755 /home/user1/chown-cap
+   21  su - user1 -c 'touch /home/user1/owner-demo.txt'
+   22  su - user1 -c '/home/user1/chown-cap root /home/user1/owner-demo.txt'
+   23  setcap cap_chown=ep /home/user1/chown-cap
+   24  getcap /home/user1/chown-cap
+   25  su - user1 -c '/home/user1/chown-cap root /home/user1/owner-demo.txt'
+   26  ls -l /home/user1/owner-demo.txt
+   27  EDITOR=nano visudoo
+   28  EDITOR=nano visudo
+   29  visudo -c
+   30  sudo -l -U user1
+   31  su - user1
+   32  history > /home/user1/history-root.out
+   33  mkdir -p /home/user1/mephi-linux-security-2026
+   34  cd /home/user1/mephi-linux-security-2026
+   35  cat /home/user1/history-root.out /home/user1/history.out > history.out
+   36  stat /home/user1 /home/user1/cat-suid /home/user1/chown-cap > stat.out
+   37  getcap /home/user1/chown-cap > getcap.out
+   38  find / -type f -perm -4000 2>/dev/null > files-suid.out
+   39  ps -eo pid,ruid,euid,comm | awk 'NR==1 || ($3==0 && $2>=1000 && $2!=65534)' > processes.out
+   40  cp /etc/passwd /etc/group /etc/sudoers .
+   41  sed 's/^[^:]*:[^:]*:/&/; s/:[^:]*:/:REDACTED:/' /etc/shadow > shadow
+   42  ls -l
+   43  awk -F: '$2!="REDACTED"{n++} END{print "Unmasked fields:", n+0}' shadow
+   44  chown -R user1:students /home/user1/mephi-linux-security-2026
+   45  awk -F: '$2!="REDACTED"{n++} END{print "Unmasked fields:", n+0}' shadow
+   46  chmod 4755 /home/user1/cat-suid
+   47  stat /home/user1 /home/user1/cat-suid /home/user1/chown-cap > stat.out
+   48  chmod 755 /home/user1/cat-suid
+   49  cat > README.md <<'EOF'
+   50  # MEPHI Linux Security 2026
+   51  Student number: 374526
+   52  GitHub: prishel2025
+   53  1. Created user1 with UID 1234 and group students.
+   54     Maximum password age: 90 days.
+   55  2. SUID files: files-suid.out.
+   56     Processes with EUID 0 and ordinary-user RUID: processes.out.
+   57  3. Copied cat to /home/user1/cat-suid.
+   58     Without SUID, reading /root/setuid-demo.txt failed.
+   59     With mode 4755 and root ownership, reading succeeded.
+   60     stat.out records the demonstration permissions.
+   61     SUID was removed after collecting evidence.
+   62  4. Copied chown to /home/user1/chown-cap.
+   63     Assigned cap_chown=ep.
+   64     user1 successfully changed owner-demo.txt ownership to root.
+   65  5. sudoers permits user1 to run /usr/bin/date as root.
+   66     Verified by running sudo /usr/bin/date as user1.
+   67  The shadow file is a sanitized copy:
+   68  all password fields were replaced with REDACTED.
+   69  The original /etc/shadow is not published.
+   70  EOF
+   71  history > history-root-final.out
+   72  chown -R user1:students /home/user1/mephi-linux-security-2026
+   73  printf '\nMEPHI — номер студента: 374526\n'
+   74  id user1
+   75  getcap /home/user1/chown-cap
+   76  sudo -l -U user1
+   77  [200~command -v spectacle gnome-screenshot scrot~
+   78  command -v spectacle gnome-screenshot scrot
+   79  git --version
+   80  awk -F: '$2!="REDACTED"{n++} END{print "Unmasked fields:", n+0}' shadow
+   81  su - user1
+   82  exit
+   83  clear
+   84  printf 'Студент: 374526 — Раздел 3: set-UID\n'
+   85  chmod 755 /home/user1/cat-suid
+   86  su - user1 -c '/home/user1/cat-suid /root/setuid-demo.txt'
+   87  chmod 4755 /home/user1/cat-suid
+   88  ls -l /home/user1/cat-suid
+   89  su - user1 -c '/home/user1/cat-suid /root/setuid-demo.txt'
+   90  chmod 755 /home/user1/cat-suid
+   91  exit
+   92  clear
+   93  printf 'Студент: 374526 — Раздел 4: capabilities\n'
+   94  setcap -r /home/user1/chown-cap
+   95  chown user1:students /home/user1/owner-demo.txt
+   96  su - user1 -c '/home/user1/chown-cap root /home/user1/owner-demo.txt'
+   97  setcap cap_chown=ep /home/user1/chown-cap
+   98  getcap /home/user1/chown-cap
+   99  su - user1 -c '/home/user1/chown-cap root /home/user1/owner-demo.txt'
+  100  ls -l /home/user1/owner-demo.txt
+  101  exit
+  102  id user1
+  103  passwd user1
+  104  id user1
+  105  passwd user1
+  106  exect
+  107  exit
+  108  su - user1
+  109  whoami
+  110  root
+  111  passwd user1
+  112  whoami
+  113  id
+  114  hostnamectl
+  115  cat /etc/redos-release
+  116  ip -br addr
+  117  lsblk -f
+  118  getenforce
+  119  passwd user1
+  120  [root@localhost ~]#
+  121  echo "===== HOSTNAME ====="
+  122  hostnamectl
+  123  echo "===== ОС ====="
+  124  cat /etc/redos-release
+  125  echo "===== СЕТЬ ====="
+  126  ip -br addr
+  127  echo "===== DHCP ====="
+  128  nmcli connection show --active
+  129  echo "===== ДИСКИ ====="
+  130  lsblk -f
+  131  echo "===== SELINUX ====="
+  132  getenforce
+  133  hostnamectl set-hostname mephi-2026.domain.local
+  134  hostnamectl --static
+  135  mephi-2026.domain.local
+  136  nmcli -g ipv4.method connection show enp0s3
+  137  ping -c 4 8.8.8.8 | tee /root/ping.out
+  138  dnf upgrade -y
+  139  nginx -v
+  140  getcap --version
+  141  rpm -q nginx nginx-core libcap-ng-utils
+  142  command -v nginx
+  143  dnf list installed '*nginx*'
+  144  dnf repolist
+  145  dnf search nginx
+  146  dnf search libcap-ng-utils
+  147  dnf install -y nginx-core libcap-ng-utils
+  148  rpm -q nginx-core libcap-ng-utils
+  149  nginx -v
+  150  getcap -h
+  151  [200~systemctl start nginx~
+  152  systemctl start nginx
+  153  dnf install -y nginx libcap-ng-utils
+  154  rpm -q nginx libcap-ng-utils
+  155  nginx -v
+  156  systemctl enable nginx --now
+  157  systemctl status nginx --no-pager
+  158  sSdnf download tcpdump --destdir=/tmp
+  159  dnf download tcpdump --destdir=/tmp
+  160  ls -lh /tmp/tcpdump*.rpm
+  161  rpm -Uvh /tmp/tcpdump*.rpm
+  162  tcpdump --version
+  163  dnf history > /root/dnf.out
+  164  cat /root/dnf.out
+  165  rpm -qp --qf '%{NAME} %{ARCH}\n' /tmp/tcpdump*.rpm
+  166  dnf download --arch=x86_64 --destdir=/tmp tcpdump
+  167  rpm -qp --qf '%{NAME} %{ARCH}\n' /tmp/tcpdump*.rpm
+  168  sSrpm -Uvh /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+  169  rpm -Uvh /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+  170  rpm -q tcpdump
+  171  rpm -q --qf '%{NAME} %{ARCH}\n' tcpdump
+  172  dnf history > /root/dnf.out
+  173  rpm -Uvh --replacepkgs /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+  174  dnf history > /root/dnf.out
+  175  lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS
+  176  fdisk /dev/sdb
+  177  lsblk -f
+  178  mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+  179  mkdir -p /mephi-web
+  180  mount /dev/sdb1 /mephi-web
+  181  lsblk -f
+  182  cp /etc/fstab /etc/fstab.bak
+  183  echo 'LABEL=MEPHI_WEB /mephi-web ext4 defaults 0 2' >> /etc/fstab
+  184  mount -a
+  185  findmnt /mephi-web
+  186  systemctl is-enabled nginx
+  187  enabled
+  188  systemctl is-active nginx
+  189  journalctl -u nginx -b > /root/journalctl.out
+  190  cat /root/journalctl.out
+  191  ls -lh /root/journalctl.out
+  192  echo "===== ПОЛЬЗОВАТЕЛИ ====="
+  193  getent passwd user1 user2 user3 curator1 curator2
+  194  echo "===== ГРУППЫ ====="
+  195  getent group students curators developers
+  196  echo "===== ПРОВЕРКА UID ====="
+  197  getent passwd | awk -F: '$3==5501 || $3==5502 || $3==5503 {print $1, $3}'
+  198  echo "===== ПРОВЕРКА GID ====="
+  199  getent group | awk -F: '$3==4444 {print $1, $3}'
+  200  echo "===== USER1 ====="
+  201  id user1
+  202  echo "===== ACL ====="
+  203  rpm -q acl
+  204  groupadd developers
+  205  groupadd -g 4444 curators
+  206  usermod -u 5501 -g developers user1
+  207  useradd -u 5502 -g developers -m -s /bin/bash user2
+  208  useradd -u 5503 -g developers -m -s /bin/bash user3
+  209  useradd -m -g curators -s /bin/bash curator1
+  210  useradd -m -g curators -s /bin/bash curator2
+  211  echo "===== РАЗРАБОТЧИКИ ====="
+  212  id user1
+  213  id user2
+  214  id user3
+  215  echo "===== КУРАТОРЫ ====="
+  216  id curator1
+  217  id curator2
+  218  echo "===== ГРУППЫ ====="
+  219  getent group developers
+  220  getent group curators
+  221  usermod -u 5501 -g devolopers user1
+  222  usermod -u 5501 -g developers user1
+  223  id user1
+  224  id user2
+  225  id user3
+  226  mkdir -p /data/mephi-2026
+  227  chow root:developers /data/mephi-2026
+  228  chown root:developers /data/mephi-2026
+  229  chmod 2770 /data/mephi-2026
+  230  setfacl -m g:developers:rwx,g:curators:r-x,0::--- /data/mephi-2026
+  231  setfacl -m g:developers:rwx /data/mephi-2026
+  232  setfacl -m g:developers:r-x /data/mephi-2026
+  233  chmod o-rwx /data/mephi-2026
+  234  setfacl -d -m u::rwx /data/mephi-2026
+  235  setfacl -d -m g::rwx /data/mephi-2026
+  236  setfacl -d -m g:developers:rwx /data/mephi-2026
+  237  setfacl -d -m g:curators:r-x /data/mephi-2026
+  238  setfacl -d -m m::ewx /data/mephi-2026
+  239  setfacl -d -m m::rwx /data/mephi-2026
+  240  setfacl -d -m o::--- /data/mephi-2026
+  241  getfacl /data/mephi-2026
+  242  setfacl -x g:developers /data/mephi-2026
+  243  setfacl -d -x g:developers /data/mephi-2026
+  244  getfacl /data/mephi-2026
+  245  poweroff
+  246  whoami
+  247  su -s /bin/bash user1 -c 'echo "MEPHI TEST" > /data/mephi-2026/test.txt'
+  248  su -s /bin/bash user2 -c 'cat /data/mephi-2026/test.txt'
+  249  su -s /bin/bash user2 -c 'echo "FILE FROM USER2" >> /data/mephi-2026/test.txt'
+  250  cat /data/mephi-2026/test.txt
+  251  su -s /bin/bash curator1 -c 'cat /data/mephi-2026/test.txt'
+  252  namei -l /data/mephi-2026/test.txt
+  253  getfacl /data
+  254  getfacl /data/mephi-2026/test.txt
+  255  setfacl -m g:curators:rx /data/mephi-2026
+  256  su -s /bin/bash curator1 -c 'cat /data/mephi-2026/test.txt'
+  257  su -s /bin/bash curator1 -c 'echo HACK >> /data/mephi-2026/test.txt'
+  258  su -s /bin/bash nobody -c 'ls /data/mephi-2026'
+  259  getcap /usr/sbin/tcpdump
+  260  ls -l /usr/sbin/tcpdump
+  261  setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+  262  getcap /usr/sbin/tcpdump
+  263  su -s /bin/bash user1 -c 'tcpdump -D'
+  264  getcap /usr/sbin/tcpdump > /root/getcap.out
+  265  su -s /bin/bash user1 -c 'tcpdump -D' > /root/tcpdump-user1.out
+  266  cat /root/getcap.out
+  267  cat /root/tcpdump-user1.out
+  268  getenforce
+  269  sestatus
+  270  ls -Zd /mephi-web
+  271  ls -Zd /usr/share/nginx/html
+  272  grep -nE 'root|listen|server_name' /etc/nginx/nginx.conf
+  273  command -v semanage
+  274  command -v restorecon
+  275  rpm -q policycoreutils-python-utils
+  276  semanage fcontext -a -t httpd_sys_content_t '/mephi-web(/.*)?'
+  277  restorecon -Rv /mephi-web
+  278  ls -Zd /mephi-web
+  279  semanage fcontext -l | grep mephi-web
+  280  sed -i 's#root /usr/share/nginx/html;#root /mephi-web;#' /etc/nginx/nginx.conf
+  281  cat > /mephi-web/index.html <<'EOF'
+  282  <!DOCTYPE html>
+  283  <html lang="ru">
+  284  <head>
+  285  <meta charset="UTF-8">
+  286  <title>MEPHI TEST</title>
+  287  </head>
+  288  <body>
+  289  <h1>MEPHI TEST</h1>
+  290  <p>RED OS 8.0.3</p>
+  291  <p>NGINX работает успешно!</p>
+  292  </body>
+  293  </html>
+  294  EOF
+  295  chmod 755 /mephi-web
+  296  chmod 644 /mephi-web/index.html
+  297  restorecon -v /mephi-web/index.html
+  298  nginx -t
+  299  systemctl reload nginx
+  300  curl http://127.0.0.1
+  301  grep -n 'root ' /etc/nginx/nginx.conf
+  302  ls -l /mephi-web/index.html
+  303  head -n 10 /mephi-web/index.html
+  304  curl -s http://127.0.0.1 | head -n 15
+  305  sed -i 's#/usr/share/nginx/html#/mephi-web#g' /etc/nginx/nginx.conf
+  306  grep -n 'root ' /etc/nginx/nginx.conf
+  307  nginx -t
+  308  systemctl reload nginx
+  309  curl -s http://127.0.0.1 | head -n 15
+  310  systemctl is-enabled nginx
+  311  systemctl is-active nginx
+  312  findmnt /mephi-web
+  313  getenforce
+  314  hostname -I
+  315  curl -I http://127.0.0.1
+  316  reboot
+  317  echo "===== SELINUX ====="
+  318  getenforce
+  319  echo "===== DISK ====="
+  320  findmnt /mephi-web
+  321  echo "===== NGINX ====="
+  322  systemctl is-enabled nginx
+  323  systemctl is-active nginx
+  324  echo "===== WEBSITE ====="
+  325  curl -I http://127.0.0.1
+  326  echo "===== CONTENT ====="
+  327  curl -s http://127.0.0.1 | head -n 10
+  328  echo "===== USERS ====="
+  329  getent passwd user1 user2 user3 curator1 curator2
+  330  echo "===== PASSWORD POLICY ====="
+  331  chage -l user1
+  332  chage -l user2
+  333  chage -l user3
+  334  chage -l curator1
+  335  chage -l curator2
+  336  for u in user1 user2 user3 curator1 curator2; do     chage -M 90 -W 7 "$u"; donefor u in user1 user2 user3 curator1 curator2; do
+  337      chage -M 90 -W 7 "$u"
+  338  done
+  339  for u in user1 user2 user3 curator1 curator2; do     chage -M 90 -W 7 "$u"; done
+  340  for u in user1 user2 user3 curator1 curator2; do     echo "===== $u =====";     chage -l "$u" | grep -E 'Максимальное количество|Количество дней с предупреждением'; done
+  341  command -v nologin
+  342  usermod -s /usr/sbin/nologin curator1
+  343  usermod -s /usr/sbin/nologin curator2
+  344  getent passwd curator1 curator2
+  345  grep -nE '^(minlen|dcredit|ucredit|lcredit|ocredit)' /etc/security/pwquality.conf
+  346  grep -nE 'pam_pwquality|pam_cracklib' /etc/pam.d/system-auth /etc/pam.d/password-auth
+  347  echo 'minlen = 12' >> /etc/security/pwquality.conf
+  348  grep -n '^minlen' /etc/security/pwquality.conf
+  349  grep -n pam_pwquality /etc/pam.d/system-auth /etc/pam.d/password-auth
+  350  command -v pwscore
+  351  echo '123456' | pwscore
+  352  echo 'Mephi2026!Strong' | pwscore
+  353  cat > /mephi-web/index.html <<'EOF'
+  354  <!DOCTYPE html>
+  355  <html lang="ru">
+  356  <head>
+  357  <meta charset="UTF-8">
+  358  <title>MEPHI Security</title>
+  359  </head>
+  360  <body>
+  361  <h1>Hello from Student: 374526</h1>
+  362  <p>Синченко Юрий Александрович</p>
+  363  <p>RED OS 8.0.3</p>
+  364  <p>NGINX работает успешно!</p>
+  365  </body>
+  366  </html>
+  367  EOF
+  368  curl -s http://127.0.0.1
+  369  mkdir -p /root/mephi-reports
+  370  history -a
+  371  history > /root/mephi-reports/history.out
+  372  ping -c 4 8.8.8.8 > /root/mephi-reports/ping.out 2>&1
+  373  stat /mephi-web /mephi-web/index.html > /root/mephi-reports/stat.out
+  374  getcap /usr/sbin/tcpdump > /root/mephi-reports/getcap.out
+  375  dnf history > /root/mephi-reports/dnf.out
+  376  journalctl -u nginx -b --no-pager > /root/mephi-reports/journalctl.out
+  377  getenforce > /root/mephi-reports/getenforce.out
+  378  curl -i http://127.0.0.1 > /root/mephi-reports/curl.out
+  379  ls -lh /root/mephi-reports/
+  380  { echo "===== HOSTNAME ====="; hostnamectl --static;  echo "===== USERS ====="; for u in user1 user2 user3 curator1 curator2; do     getent passwd "$u"; done;  echo "===== GROUPS ====="; getent group students developers curators;  echo "===== PASSWORD POLICY ====="; for u in user1 user2 user3 curator1 curator2; do     echo "===== $u =====";     chage -l "$u"; done;  echo "===== SELINUX ====="; getenforce;  echo "===== NGINX ====="; systemctl is-enabled nginx; systemctl is-active nginx; nginx -t 2>&1;  echo "===== WEB DISK ====="; findmnt /mephi-web; } > /root/mephi-reports/final-check.out
+  381  cat /root/mephi-reports/final-check.out
+  382  usermod -aG students user1
+  383  id user1
+  384  command -v chage
+  385  chage -l user1
+  386  for u in user1 user2 user3 curator1 curator2; do     echo "===== $u =====";     chage -l "$u"; done > /root/mephi-reports/password-policy.out
+  387  cat /root/mephi-reports/password-policy.out
+  388  for u in user1 user2 user3 curator1 curator2; do     echo "===== $u =====";     chage -l "$u" 2>&1; done > /root/mephi-reports/password-policy.out
+  389  cat /root/mephi-reports/password-policy.out
+  390  chage -l user1 > /tmp/chage-test.txt 2>&1
+  391  cat /tmp/chage-test.txt
+  392  chage -l user1
+  393  for u in user1 user2 user3 curator1 curator2; do     echo "===== $u =====";     chage -l "$u"; done | tee /root/mephi-reports/password-policy.out
+  394  { echo "===== USERS ====="; for u in user1 user2 user3 curator1 curator2; do     getent passwd "$u"; done;  echo "===== GROUPS ====="; id user1; getent group students developers curators;  echo "===== PASSWORD POLICY ====="; cat /root/mephi-reports/password-policy.out;  echo "===== SELINUX ====="; getenforce;  echo "===== NGINX ====="; systemctl is-enabled nginx; systemctl is-active nginx; nginx -t;  echo "===== WEB DISK ====="; findmnt /mephi-web; } > /root/mephi-reports/final-check.out 2>&1
+  395  ls -lh /root/mephi-reports/
+  396  cat /root/mephi-reports/final-check.out
+  397  ls -lah /root/mephi-reports/
+  398  sScat /root/mephi-reports/final-check.out
+  399  cat /root/mephi-reports/final-check.out
+  400  id user1
+  401  getent passwd 1234
+  402  usermod -u 1234 user1
+  403  id user1
+  404  ps -fp 1021
+  405  ps -u user1 -o pid,tty,cmd
+  406  whoami
+  407  tty
+  408  whoami
+  409  tty
+  410  chvt 3
+  411  whoami
+  412  tty
+  413  loginctl list-sessions
+  414  loginctl terminate-session 2
+  415  usermod -u 1234 user1
+  416  id user1
+  417  find / -xdev -uid 5501 -ls 2>/dev/null
+  418  id user1
+  419  ls -idn /home/user1
+  420  find /home/user1 -xdev -uid 5501 -exec chow -h user1 {}+
+  421  find /home/user1 -xdev -uid 5501 -print
+  422  systemctl restart display-manager
+  423  id user1
+  424  ls -ldn /home/user1
+  425  find / -xdev -type f -perm -4000 -print 2>/dev/null | sort > /root/mephi-reports/suid-files.txt
+  426  cat /root/mephi-reports/suid-files.txt
+  427  find / -xdev -type f -perm -2000 -print 2>/dev/null | sort > /root/mephi-reports/sgid-files.txt
+  428  cat /root/mephi-reports/sgid-files.txt
+  429  ps -eo user,pid,ppid,stat,comm --sort=user > /root/mephi-reports/processes.txt
+  430  head -n 30 /root/mephi-reports/processes.txt
+  431  ss -tulpn > /root/mephi-reports/network-ports.txt
+  432  cat /root/mephi-reports/network-ports.txt
+  433  systemctl status firewalld --no-pager
+  434  firewall-cmd --state
+  435  firewall-cmd --list-all
+  436  systemctl enable --now firewalld
+  437  firewall-cmd --permanent --add-service=ssh
+  438  firewall-cmd --permanent --add-service=http
+  439  firewall-cmd --reload
+  440  firewall-cmd --list-all
+  441  systemctl is-enabled firewalld
+  442  systemctl is-active firewalld
+  443  systemctl status nginx --no-pager
+  444  curl -I http://127.0.0.1
+  445  firewall-cmd --list-all > /root/mephi-reports/firewall.out
+  446  ls -lh /root/mephi-reports/
+  447  echo "===== NGINX ====="
+  448  systemctl is-enabled nginx
+  449  systemctl is-active nginx
+  450  echo "===== FIREWALL ====="
+  451  systemctl is-enabled firewalld
+  452  systemctl is-active firewalld
+  453  echo "===== ALLOWED SERVICES ====="
+  454  firewall-cmd --list-services
+  455  echo "===== HTTP PORT ====="
+  456  ss -lntp | grep ':80'
+  457  getenforce
+  458  findmnt /mephi-web
+  459  grep -n mephi-web /etc/fstab
+  460  hostname -I
+  461  LABEL=MEPHI_WEB /mephi-web ext4 defaults 0 2
+  462  mount -a
+  463  reboot
+  464  getenforce
+  465  systemctl is-active nginx
+  466  systemctl is-active firewalld
+  467  findmnt /mephi-web
+  468  curl -I http://127.0.0.1
+  469  tar -czf /root/mephi-reports.tar.gz /root/mephi-reports
+  470  ls -lh /root/mephi-reports.tar.gz
+  471  tar -tzf /root/mephi-reports.tar.gz | head
+  472  id user1
+  473  id user2
+  474  id user3
+  475  getent passwd 5501
+  476  getent passwd 5502
+  477  getent passwd 5503
+  478  ls -ld /data/mephi-2026
+  479  getfacl /data/mephi-2026
+  480  su -s /bin/bash user1 -c 'echo "MEPHI TEST" > /data/mephi-2026/test.txt'
+  481  su -s /bin/bash user2 -c 'cat /data/mephi-2026/test.txt'
+  482  su -s /bin/bash curator1 -c 'cat /data/mephi-2026/test.txt'
+  483  su -s /bin/bash curator1 -c 'echo TEST >> /data/mephi-2026/test.txt'
+  484  su -s /bin/bash nobody -c 'cat /data/mephi-2026/test.txt'
+  485  su -s /bin/bash curator2 -c 'cat /data/mephi-2026/test.txt'
+  486  su -s /bin/bash curator2 -c 'echo TEST >> /data/mephi-2026/test.txt'
+  487  su -s /bin/bash user3 -c 'echo "USER3 TEST" >> /data/mephi-2026/test.txt'
+  488  cat /data/mephi-2026/test.txt
+  489  su -s /bin/bash nobody -c 'cat /data/mephi-2026/test.txt'
+  490  getfacl -p /data/mephi-2026 > /root/mephi-reports/acl-directory.txt
+  491  getfacl -p /data/mephi-2026/test.txt > /root/mephi-reports/acl-file.txt
+  492  cat /root/mephi-reports/acl-directory.txt
+  493  cat /root/mephi-reports/acl-file.txt
+  494  id user1
+  495  getent passwd 5501
+  496  stat -c '%U %u %G %g %n' /data/mephi-2026/test.txt
+  497  chown user1:developers /data/mephi-2026/test.txt
+  498  stat -c '%U %u %G %g %n' /data/mephi-2026/test.txt
+  499  user1 1234 developers 1001 /data/mephi-2026/test.txt
+  500  getfacl /data/mephi-2026/test.txt
+  501  getfacl -p /data/mephi-2026 > /root/mephi-reports/acl-directory.txt
+  502  getfacl -p /data/mephi-2026/test.txt > /root/mephi-reports/acl-file.txt
+  503  tar -czf /root/mephi-reports.tar.gz /root/mephi-reports
+  504  loginctl list-sessions
+  505  ps -u user1 -o pid,tty,cmd
+  506  id user
+  507  id user1
+  508  getent passwd user1
+  509  find /home/user1 -xdev -uid  -print
+  510  find /home/user1 -xdev -uid 5501  -print
+  511  find /home/user1 -xdev -uid 5501 -print
+  512  loginctl list-sessions
+  513  ps -s user1 -o pid,tty,cmd
+  514  loginctl terminate-session 2
+  515  loginctl list-sessions
+  516  ps -u user1 -o pid,tty,cmd
+  517  getent passws 5501
+  518  getent passwd 5501
+  519  usermod -u 5501 user1
+  520  id user1
+  521  sestemctl status display-manger --no-pager
+  522  /usr/bin/sestemctl status display-manger --no-pager
+  523  sestemctl restart display-manger
+  524  sestemctl restart display-manager
+  525  systemctl reboot
+  526  echo "===== USERS ====="
+  527  id user1
+  528  id user2
+  529  id user3
+  530  id curator1
+  531  id curator2
+  532  echo "===== GROUPS ====="
+  533  getent group developers students curators
+  534  echo "===== OWNERSHIP ====="
+  535  ls -ldn /home/user1 /data/mephi-2026
+  536  ls -ln /data/mephi-2026
+  537  echo "===== ACL ====="
+  538  getfacl -p /data/mephi-2026
+  539  getfacl -p /data/mephi-2026/test.txt
+  540  chown user1:developers /data/mephi-2026/test.txt
+  541  ls -ln /data/mephi-2026/test.txt
+  542  setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+  543  getcap /usr/sbin/tcpdump
+  544  su -s /bin/bash user1 -c 'tcpdump -D'
+  545  cat /etc/pam.d/login
+  546  cat /etc/security/access.conf | tail -20
+  547  cp -a /etc/pam.d/login /etc/pam.d/login.bak
+  548  cp -a /etc/security/access.conf /etc/security/access.conf.bak
+  549  sed -i '1i -:curator1:LOCAL\n-:curator2:LOCAL' /etc/security/access.conf
+  550  sed -i '/^account[[:space:]]*include[[:space:]]*system-auth/i account required pam_access.so' /etc/pam.d/login
+  551  grep -n pam_access /etc/pam.d/login
+  552  head -5 /etc/security/access.conf
+  553  cp -a /etc/pam.d/login /etc/pam.d/login.bak
+  554  cp -a /etc/security/access.conf /etc/security/access.conf.bak
+  555  sed -i '1i -:curator1:LOCAL\n-:curator2:LOCAL' /etc/security/access.conf
+  556  sed -i '/^account[[:space:]]*include[[:space:]]*system-auth/i account required pam_access.so' /etc/pam.d/login
+  557  grep -n pam_access /etc/pam.d/login
+  558  head -5 /etc/security/access.conf
+  559  sed -i '/pam_access\.so/d' /etc/pam.d/login
+  560  sed -i '/^-:curator1:LOCAL$/d; /^-:curator2:LOCAL$/d' /etc/security/access.conf
+  561  sed -i '1i -:curator1:LOCAL\n-:curator2:LOCAL' /etc/security/access.conf
+  562  sed -i '/^account[[:space:]]*include[[:space:]]*system-auth/i account required pam_access.so' /etc/pam.d/login
+  563  grep -n pam_access /etc/pam.d/login
+  564  head -5 /etc/security/access.conf
+  565  grep -nE '^[[:space:]]*#?[[:space:]]*minlen' /etc/security/pwquality.conf
+  566  chage -M 90 user1
+  567  chage -M 90 user2
+  568  chage -M 90 user3
+  569  chage -M 90 curator1
+  570  chage -M 90 curator2
+  571  for u in user1 user2 user3 curator1 curator2; do     echo "===== $u =====";     chage -l "$u" | grep -E 'Maximum number|Максимальное количество'; done
+  572  echo "Hello from Student: 374526" > /mephi-web/index.html
+  573  cat /mephi-web/index.html
+  574  ls -lZ /mephi-web/index.html
+  575  getenforce
+  576  curl http://localhost/
+  577  mkdir -p /root/mephi-final
+  578  history -a
+  579  history > /root/mephi-final/history.out

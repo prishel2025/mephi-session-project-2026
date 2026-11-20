@@ -1,0 +1,8 @@
+# file: /data/mephi-2026/test.txt
+# owner: user1
+# group: developers
+user::rw-
+group::rwx	#effective:rw-
+group:curators:r-x	#effective:r--
+mask::rw-
+other::---
